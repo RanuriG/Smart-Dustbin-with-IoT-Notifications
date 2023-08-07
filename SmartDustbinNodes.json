@@ -1,0 +1,230 @@
+[
+    {
+        "id": "193f6763.8bef39",
+        "type": "tab",
+        "label": "Smart Dustbin without auth",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4d28dfc2.c42f",
+        "type": "mqtt in",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "topic": "Xout",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "cb9f2a2a.3d2c08",
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "ddb51667.5595c8"
+            ]
+        ]
+    },
+    {
+        "id": "a3041bee.840e88",
+        "type": "mqtt out",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "topic": "Xin",
+        "qos": "2",
+        "retain": "false",
+        "broker": "cb9f2a2a.3d2c08",
+        "x": 1150,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "ddb51667.5595c8",
+        "type": "json",
+        "z": "193f6763.8bef39",
+        "name": "[ Converts a JSON formatted String to A & B via respective msg.payload",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 420,
+        "y": 320,
+        "wires": [
+            [
+                "a67905b1.e9f598",
+                "187bdac8.576dd5"
+            ]
+        ]
+    },
+    {
+        "id": "a67905b1.e9f598",
+        "type": "function",
+        "z": "193f6763.8bef39",
+        "name": "A - Distance [ activates if DIST  < 50 ]",
+        "func": "msg.payload = msg.payload.A\nreturn msg;\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 730,
+        "y": 480,
+        "wires": [
+            [
+                "cb136813.34dac8",
+                "4ba63764.1a5e28",
+                "4b392c04.152074"
+            ]
+        ]
+    },
+    {
+        "id": "187bdac8.576dd5",
+        "type": "function",
+        "z": "193f6763.8bef39",
+        "name": "B - Garbage Level [ Just shows the LEVEL ]",
+        "func": "msg.payload = msg.payload.B\nif (parseInt(msg.payload) < 10)\nvar msg1 = { payload:\"Full\" };\nif (parseInt(msg.payload) > 10)\nvar msg2 = { payload:\"Not Full\" };\nreturn [msg,[msg1,msg2]];",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 790,
+        "y": 140,
+        "wires": [
+            [
+                "31062040.d3c23",
+                "12f12f8.1d420d1"
+            ],
+            [
+                "e9e59147.fd2fc"
+            ]
+        ]
+    },
+    {
+        "id": "da1724c8.513248",
+        "type": "debug",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1170,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "cb136813.34dac8",
+        "type": "blynk-ws-out-write",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "pin": "0",
+        "pinmode": 0,
+        "client": "2a26605c.be28e",
+        "x": 1000,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "31062040.d3c23",
+        "type": "blynk-ws-out-write",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "pin": "1",
+        "pinmode": 0,
+        "client": "2a26605c.be28e",
+        "x": 1120,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "4ba63764.1a5e28",
+        "type": "function",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "func": "if (parseInt(msg.payload) < 50)\n{\nmsg.payload =  1\ncontext.global.SERVO_Status = 1\n}\nelse\n{\nmsg.payload = 0\ncontext.global.SERVO_Status = 0//\"Servo OFF\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 990,
+        "y": 460,
+        "wires": [
+            [
+                "da1724c8.513248",
+                "a3041bee.840e88"
+            ]
+        ]
+    },
+    {
+        "id": "12f12f8.1d420d1",
+        "type": "debug",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1110,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4b392c04.152074",
+        "type": "debug",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 970,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e9e59147.fd2fc",
+        "type": "blynk-ws-out-write",
+        "z": "193f6763.8bef39",
+        "name": "",
+        "pin": "2",
+        "pinmode": 0,
+        "client": "2a26605c.be28e",
+        "x": 1120,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "cb9f2a2a.3d2c08",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "broker.hivemq.com",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "2a26605c.be28e",
+        "type": "blynk-ws-client",
+        "z": "",
+        "name": "G1",
+        "path": "ws://blynk-cloud.com/websockets",
+        "key": "",
+        "dbg_all": false,
+        "dbg_read": false,
+        "dbg_write": false,
+        "dbg_notify": false,
+        "dbg_mail": false,
+        "dbg_prop": false,
+        "dbg_low": false,
+        "dbg_pins": ""
+    }
+]
